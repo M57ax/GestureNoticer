@@ -2,6 +2,7 @@
 #include <iostream>
 #include "json.hpp"
 #include <fstream>
+#include <vector>
 
 int main()
 {
@@ -11,18 +12,36 @@ int main()
     // Test 1: simples Bildfenster
     cv::Mat test(240, 320, CV_8UC3, cv::Scalar(40, 40, 40));
     cv::putText(test, "OpenCV OK!", {20, 120}, cv::FONT_HERSHEY_SIMPLEX, 0.8, {200, 200, 200}, 2);
-    cv::imshow("Testfensterrrr (5s)", test);
+    cv::imshow("Testfenster (5s)", test);
     cv::waitKey(500); // kurz zeigen, danach Webcam versuchen
 
     // Test 2: Webcam
-    std::cout << "Oeffne Kamera 0..." << std::endl;
-    cv::VideoCapture cam(0);
+    std::cout << "Oeffne Kamera..." << std::endl;
+    cv::VideoCapture cam;
+    int selectedBackend = -1;
+    int selectedIndex = -1;
+    const std::vector<int> backends = {cv::CAP_DSHOW, cv::CAP_MSMF};
+    for (int backend : backends)
+    {
+        for (int index = 0; index <= 3; ++index)
+        {
+            if (cam.open(index, backend))
+            {
+                selectedBackend = backend;
+                selectedIndex = index;
+                break;
+            }
+        }
+        if (cam.isOpened())
+            break;
+    }
     if (!cam.isOpened())
     {
-        std::cerr << "KAMERA NICHT GEFUNDEN. Druecke Enter zum Beenden.\n";
+        std::cerr << "KAMERA NICHT GEFUNDEN (Backend DSHOW/MSMF, Index 0..3). Druecke Enter zum Beenden.\n";
         std::cin.get();
         return 1;
     }
+    std::cout << "Kamera-Backend: " << selectedBackend << ", Index: " << selectedIndex << "\n";
 
     std::cout << "Kamera offen. ESC zum Beenden.\n";
 

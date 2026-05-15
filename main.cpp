@@ -79,7 +79,7 @@ int main()
     {
         std::cerr << "Key 'fist_up' fehlt in meme.json!\n";
     }
-
+    auto lastTick = cv::getTickCount();
     while (true)
     {
         cv::Mat frame;
@@ -89,6 +89,14 @@ int main()
             std::cerr << "Leerer Frame – breche ab.\n";
             break;
         }
+
+        auto nowTick = cv::getTickCount();
+        double dt = (nowTick - lastTick) / cv::getTickFrequency();
+        lastTick = nowTick;
+        double fps = (dt > 0.0) ? (1.0 / dt) : 0.0;
+
+        std::string overlay = "FPS: " + std::to_string(static_cast<int>(fps));
+        cv::putText(frame, overlay, {20, 40}, cv::FONT_HERSHEY_SIMPLEX, 1.0, {0, 255, 0}, 2);
         cv::imshow("Webcamarsch", frame);
 
         // ESC beendet

@@ -9,11 +9,11 @@ int main()
     std::cout << "Starte GestureNoticer...\n";
     std::cout << "OpenCV Version: " << CV_VERSION << std::endl;
 
-    // Test 1: simples Bildfenster
+    // Test 1: simples window
     cv::Mat test(240, 320, CV_8UC3, cv::Scalar(40, 40, 40));
     cv::putText(test, "OpenCV OK!", {20, 120}, cv::FONT_HERSHEY_SIMPLEX, 0.8, {200, 200, 200}, 2);
     cv::imshow("Testfenster (5s)", test);
-    cv::waitKey(500); // kurz zeigen, danach Webcam versuchen
+    cv::waitKey(500);
 
     // Test 2: Webcam
     std::cout << "Oeffne Kamera..." << std::endl;
@@ -45,7 +45,7 @@ int main()
 
     std::cout << "Kamera offen. ESC zum Beenden.\n";
 
-    // JSON laden
+    // loads JSON
     std::ifstream file("assets/memes.json");
     if (!file.is_open())
     {
@@ -53,22 +53,21 @@ int main()
         return 1;
     }
 
-    // In ein JSON-Objekt parsen
+    // parse into JSON object
     nlohmann::json memes;
     file >> memes;
 
-    // Zugriffstest
     if (memes.contains("fist_up"))
     {
         std::string path = memes["fist_up"];
         std::cout << "Pfad zum Meme: " << path << "\n";
 
-        // Testweise Bild laden und anzeigen
+        // test for a pic
         cv::Mat meme = cv::imread(path);
         if (!meme.empty())
         {
             cv::imshow("Meme-Test", meme);
-            cv::waitKey(2000); // 2s anzeigen
+            cv::waitKey(2000);
         }
         else
         {
@@ -99,7 +98,7 @@ int main()
         cv::putText(frame, overlay, {20, 40}, cv::FONT_HERSHEY_SIMPLEX, 1.0, {0, 255, 0}, 2);
         cv::imshow("Webcamarsch", frame);
 
-        // ESC beendet
+        // ESC for close
         if (cv::waitKey(1) == 27)
             break;
     }

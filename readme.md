@@ -1,6 +1,6 @@
 # What is GestureNoticer?
 
-GestureNoticer is a small side project I started for fun and to learn more about C++, OpenCV and computer vision :D
+GestureNoticer is a small side project I started for fun and to learn more about C++, OpenCV and computer vision :)
 
 The goal is to create a program that can recognize hand gestures through a webcam and display fitting memes for each gesture.
 
